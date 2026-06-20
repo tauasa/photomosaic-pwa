@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Photomosaic</title>
+  <meta name="description" content="Recreate a photo out of a grid of your own photos. Runs entirely in your browser." />
+
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <meta name="theme-color" content="#0E1014" />
+  <link rel="icon" type="image/png" sizes="64x64" href="./icons/favicon-64.png" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="appbar">
+    <div class="wordmark">
+      <span class="mark" aria-hidden="true">
+        <i style="--c:var(--paper)"></i><i style="--c:var(--teal)"></i>
+        <i style="--c:var(--teal)"></i><i style="--c:var(--verm)"></i>
+      </span>
+      <span class="wordmark__text">Photomosaic</span>
+    </div>
+    <div class="appbar__actions">
+      <button class="btn btn--install" id="installBtn" hidden>Install</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="rail" aria-label="Controls">
+      <section class="group">
+        <h2 class="group__title"><span class="group__no">01</span> Source</h2>
+        <button class="btn btn--block" id="targetBtn">Choose target image</button>
+        <p class="hint" id="targetHint">The picture you want to recreate.</p>
+      </section>
+
+      <section class="group">
+        <h2 class="group__title"><span class="group__no">02</span> Tiles</h2>
+        <button class="btn btn--block" id="tilesBtn">Add photos</button>
+        <button class="btn btn--block btn--ghost" id="folderBtn">Add a folder</button>
+        <p class="readout"><b id="tileCount" class="mono">0</b> tiles loaded</p>
+      </section>
+
+      <section class="group">
+        <h2 class="group__title"><span class="group__no">03</span> Grid</h2>
+
+        <label class="field">
+          <span class="field__row"><span>Columns</span><b class="mono" id="colsOut">80</b></span>
+          <input type="range" id="cols" min="8" max="240" step="2" value="80" />
+        </label>
+        <label class="field">
+          <span class="field__row"><span>Rows</span><b class="mono" id="rowsOut">80</b></span>
+          <input type="range" id="rows" min="8" max="240" step="2" value="80" />
+        </label>
+        <label class="field">
+          <span class="field__row"><span>Cell size</span><b class="mono" id="cellOut">28&nbsp;px</b></span>
+          <input type="range" id="cell" min="8" max="96" step="2" value="28" />
+        </label>
+        <label class="field">
+          <span class="field__row"><span>Blend</span><b class="mono" id="blendOut">25%</b></span>
+          <input type="range" id="blend" min="0" max="100" step="5" value="25" />
+        </label>
+        <label class="field">
+          <span class="field__row"><span>Anti-repeat</span><b class="mono" id="repeatOut">250</b></span>
+          <input type="range" id="repeat" min="0" max="2000" step="50" value="250" />
+        </label>
+      </section>
+
+      <section class="group group--actions">
+        <button class="btn btn--block btn--primary" id="generateBtn" disabled>Generate mosaic</button>
+        <button class="btn btn--block btn--ghost" id="downloadBtn" disabled>Download PNG</button>
+      </section>
+    </aside>
+
+    <section class="stage" aria-label="Preview">
+      <div class="stage__toolbar">
+        <div class="segmented" role="tablist" aria-label="View">
+          <button class="seg is-active" data-view="target" role="tab">Target</button>
+          <button class="seg" data-view="mosaic" role="tab">Mosaic</button>
+        </div>
+        <span class="stage__meta mono" id="stageMeta"></span>
+      </div>
+
+      <div class="canvas-wrap" id="canvasWrap">
+        <canvas id="canvas"></canvas>
+        <div class="placeholder" id="placeholder">
+          <span class="placeholder__grid" aria-hidden="true"></span>
+          <p class="placeholder__title">Start with a target image</p>
+          <p class="placeholder__sub">Then add the photos to build it from — or drop an image here.</p>
+        </div>
+      </div>
+
+      <div class="progress" id="progress" hidden>
+        <div class="progress__bar" id="progressBar"></div>
+        <span class="progress__label mono" id="progressLabel"></span>
+      </div>
+    </section>
+  </main>
+
+  <!-- hidden pickers -->
+  <input type="file" id="targetInput" accept="image/*" hidden />
+  <input type="file" id="tilesInput" accept="image/*" multiple hidden />
+  <input type="file" id="folderInput" webkitdirectory directory multiple hidden />
+
+  <script src="./app.js" defer></script>
+</body>
+</html>
