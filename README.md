@@ -4,6 +4,9 @@ A browser-based **photomosaic generator** — recreate one picture out of a grid
 
 This is the web counterpart of the JavaFX desktop app. The mosaic algorithm is the same; the browser's file/photo picker takes the place of the desktop `PhotoProvider`.
 
+![Target image](target.png)
+![Mosaic image](mosaic.png)
+
 ---
 
 ## Run it
